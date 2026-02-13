@@ -3,3 +3,4 @@ uvicorn[standard]==0.27.1
 requests==2.31.0
 pydantic==2.6.4
 publicsuffix2==2.20191221
+email-validator==2.1.1
