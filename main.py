@@ -60,6 +60,22 @@ class ScanRequest(BaseModel):
 def health():
     return {"ok": True}
 
+@app.get("/debug/smtp")
+def debug_smtp(req: Request):
+    _auth(req)  # same Bearer API key auth
+
+    def present(name: str) -> bool:
+        return bool((os.getenv(name, "") or "").strip())
+
+    return {
+        "SMTP_HOST_present": present("SMTP_HOST"),
+        "SMTP_PORT": os.getenv("SMTP_PORT", ""),
+        "SMTP_USER_present": present("SMTP_USER"),
+        "SMTP_PASS_present": present("SMTP_PASS"),
+        "SMTP_FROM_present": present("SMTP_FROM"),
+        "SMTP_TLS": os.getenv("SMTP_TLS", ""),
+    }
+
 @app.post("/otp/request")
 async def otp_request(req: Request, payload: OtpRequest):
     _auth(req)
